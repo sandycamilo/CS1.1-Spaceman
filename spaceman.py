@@ -12,7 +12,7 @@ def load_word():
     f = open('words.txt', 'r')
     words_list = f.readlines()
     f.close()
-    
+
     words_list = words_list[0].split(' ') #comment this line out if you use a words.txt file with each word on a new line
     secret_word = random.choice(words_list)
     return secret_word
@@ -28,10 +28,9 @@ def is_word_guessed(secret_word, letters_guessed):
     '''
     # TODO: Loop through the letters in the secret_word and check if a letter is not in lettersGuessed
     for letters in secret_word:
-        if letters in letters_guessed:
-            return True
-        else:
-            return False 
+        if letters is not letters_guessed:
+            return False
+    return True
 
 
 def get_guessed_word(secret_word, letters_guessed):
@@ -45,15 +44,17 @@ def get_guessed_word(secret_word, letters_guessed):
     '''
 
     #TODO: Loop through the letters in secret word and build a string that shows the letters that have been guessed correctly so far that are saved in letters_guessed and underscores for the letters that have not been guessed yet
-    secret_word_list = list(secret_word)
-    ans_list = ['_ ']*len(secret_word)
-    index = 0
-    for letters in secret_word_list:
-        if letters in letters_guessed:
-            ans_list[index] = letters
-        index += 1
-    return print(''.join(ans_list))
 
+    guesses = ""
+
+    for letter in secret_word:
+        if letter in letters_guessed:
+            guesses += letter
+        else:
+            guesses += "_"
+
+    return guesses
+   
 
 
 def is_guess_in_word(guess, secret_word):
@@ -71,17 +72,6 @@ def is_guess_in_word(guess, secret_word):
         return True
     else:
         return False
-    
-    # import string
-    # letters_not_guessed = string.ascii_letters
-    # letters_not_guessed_list = list(letters_not_guessed)
-    # for i in letters_not_guessed_list:
-    #     if i in letters_guessed:
-    #         letters_not_guessed_list.remove(i)
-    # return ''.join(letters_not_guessed_list)
-
-
-
 
 def spaceman(secret_word):
     '''
@@ -89,24 +79,22 @@ def spaceman(secret_word):
     Args:
       secret_word (string): the secret word to guess.
     '''
-    print('Welcome aboard!')
-    print("Let's play!")
+    print('Welcome to Spaceman!')
+    print("Your new favorite word guessing game!")
 
     number_guesses = 7
     letters_guessed = []
 
-    print (secret_word)
-
 
     while (number_guesses > 0) and (is_word_guessed(secret_word, letters_guessed) == False):
-        print('You have ', str(number_guesses), 'guesses left.')
-        get_guessed_word(secret_word,letters_guessed)
+        print('You have ', str(number_guesses), 'guesses.')
+        print(get_guessed_word(secret_word,letters_guessed))
 
         # print('Available letters: ', get_available_letters(letters_guessed))
         guess = (input('Please guess a letter: '))
 
         if not (guess.isalpha and len(guess) == 1):
-            print (":(")
+            print ("Try again: ")
             #guess = (input('Try again: '))
 
         elif (guess in letters_guessed):
@@ -128,9 +116,11 @@ def spaceman(secret_word):
 
 
     if is_word_guessed(secret_word, letters_guessed) == True:
-        print ("Congratulations, you're a star")
-    else: print ("You ran out of tries. You are still a star though ;) ")
-
+         print ("Congratulations, you're a star!")
+             
+        
+    else:
+         print ("You ran out of tries. You are still a star though. ")
 
         
 
@@ -149,3 +139,4 @@ def spaceman(secret_word):
 #These function calls that will start the game
 secret_word = load_word()
 spaceman(secret_word)
+print("The secret word is",secret_word + ".") 
