@@ -28,11 +28,10 @@ def is_word_guessed(secret_word, letters_guessed):
     '''
     # TODO: Loop through the letters in the secret_word and check if a letter is not in lettersGuessed
     for letters in secret_word:
-        if letters not in letters_guessed:
-            continue
+        if letters in letters_guessed:
+            return True
         else:
-            return False
-            return True 
+            return False 
 
 
 def get_guessed_word(secret_word, letters_guessed):
@@ -49,11 +48,11 @@ def get_guessed_word(secret_word, letters_guessed):
     secret_word_list = list(secret_word)
     ans_list = ['_ ']*len(secret_word)
     index = 0
-    for i in secret_word_list:
-        if i in letters_guessed:
-            ans_list[index] = i
+    for letters in secret_word_list:
+        if letters in letters_guessed:
+            ans_list[index] = letters
         index += 1
-    return(''.join(ans_list))
+    return print(''.join(ans_list))
 
 
 
@@ -67,13 +66,19 @@ def is_guess_in_word(guess, secret_word):
         bool: True if the guess is in the secret_word, False otherwise
     '''
     #TODO: check if the letter guess is in the secret word
-    import string
-    letters_not_guessed = string.ascii_letters
-    letters_not_guessed_list = list(letters_not_guessed)
-    for i in letters_not_guessed_list:
-        if i in letters_guessed:
-            letters_not_guessed_list.remove(i)
-    return ''.join(letters_not_guessed_list)
+    
+    if guess in secret_word:
+        return True
+    else:
+        return False
+    
+    # import string
+    # letters_not_guessed = string.ascii_letters
+    # letters_not_guessed_list = list(letters_not_guessed)
+    # for i in letters_not_guessed_list:
+    #     if i in letters_guessed:
+    #         letters_not_guessed_list.remove(i)
+    # return ''.join(letters_not_guessed_list)
 
 
 
@@ -84,19 +89,55 @@ def spaceman(secret_word):
     Args:
       secret_word (string): the secret word to guess.
     '''
-print('Welcome to the game, Hangman!')
-print('I am thinking of a word that is ',str(len(secret_word)), 'letters long.')
-print('-------------')
+    print('Welcome aboard!')
+    print("Let's play!")
 
-# while (number_guesses > 0) and (is_guess_in_word(secret_word, letters_guessed) == False):
-#     print('You have ', str(number_guesses), 'guesses left.')
-#     print('Available letters: ', get_available_letters(letters_guessed))
-#     guess = (input('Please guess a letter: '))
+    number_guesses = 7
+    letters_guessed = []
+
+    print (secret_word)
+
+
+    while (number_guesses > 0) and (is_word_guessed(secret_word, letters_guessed) == False):
+        print('You have ', str(number_guesses), 'guesses left.')
+        get_guessed_word(secret_word,letters_guessed)
+
+        # print('Available letters: ', get_available_letters(letters_guessed))
+        guess = (input('Please guess a letter: '))
+
+        if not (guess.isalpha and len(guess) == 1):
+            print (":(")
+            #guess = (input('Try again: '))
+
+        elif (guess in letters_guessed):
+            print("Oops, you have already used this letter.")
+            #guess = (input('Another letter:'))
+
+        else:
+
+            letters_guessed += guess
+
+            if is_guess_in_word(guess, secret_word):
+                print("yay")
+                get_guessed_word(secret_word,letters_guessed)
+
+            else:
+                number_guesses = number_guesses - 1
+                print('oh no, try again!')
+                get_guessed_word(secret_word,letters_guessed)
+
+
+    if is_word_guessed(secret_word, letters_guessed) == True:
+        print ("Congratulations, you're a star")
+    else: print ("You ran out of tries. You are still a star though ;) ")
+
+
+        
 
     #TODO: show the player information about the game according to the project spec
 
     #TODO: Ask the player to guess one letter per round and check that it is only one letter
-          
+
     #TODO: Check if the guessed letter is in the secret or not and give the player feedback
 
     #TODO: show the guessed word so far
