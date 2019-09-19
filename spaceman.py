@@ -28,8 +28,8 @@ def is_word_guessed(secret_word, letters_guessed):
     '''
     # TODO: Loop through the letters in the secret_word and check if a letter is not in lettersGuessed
     for letters in secret_word:
-        if letters is not letters_guessed:
-            return False
+        if letters not in letters_guessed: 
+            return False  
     return True
 
 
@@ -121,8 +121,8 @@ def spaceman(secret_word):
         
     else:
          print ("You ran out of tries. You are still a star though. ")
-
         
+
 
     #TODO: show the player information about the game according to the project spec
 
@@ -135,8 +135,8 @@ def spaceman(secret_word):
     #TODO: check if the game has been won or lost
 
 
-
+if __name__ == "__main__":
 #These function calls that will start the game
-secret_word = load_word()
-spaceman(secret_word)
-print("The secret word is",secret_word + ".") 
+    secret_word = load_word()
+    spaceman(secret_word)
+    print("The secret word is",secret_word + ".") 
